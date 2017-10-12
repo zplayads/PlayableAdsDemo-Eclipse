@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_server_error">ad server error.</string>
+    <string name="bad_request">bad request</string>
+    <string name="download_error">can\'t download apk, check for WRITE_EXTERNAL_STORAGE permission</string>
+    <string name="downloading_app">downloading</string>
+    <string name="cache_landing_page_failed">cache landing page failed</string>
+    <string name="cache_play_page_failed">cache play page failed</string>
+    <string name="goto_app_store">goto app store</string>
+    <string name="media_end">media end</string>
+    <string name="media_end_loading">media end loading</string>
+    <string name="media_page_close">media page close</string>
+    <string name="media_start">media start</string>
+    <string name="network_error">network error</string>
+    <string name="no_ad">no ad</string>
+    <string name="request_param_is_null">request param is null</string>
+    <string name="download_app">downloading: </string>
+</resources>
