@@ -7,15 +7,16 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.playableads.PlayLoadingListener;
 import com.playableads.PlayPreloadingListener;
 import com.playableads.PlayableAds;
+import com.playableads.SimplePlayLoadingListener;
 import com.playableads.demo.R;
 
 public class MainActivity extends Activity {
@@ -71,6 +72,7 @@ public class MainActivity extends Activity {
             setInfo(String.format(getString(R.string.load_failed), errorCode, msg));
             mRequestView.setEnabled(true);
         }
+        
     };
 
     public void present(View view) {
@@ -78,7 +80,7 @@ public class MainActivity extends Activity {
             Toast.makeText(this, R.string.loading_ad, Toast.LENGTH_SHORT).show();
             return;
         }
-        mAds.presentPlayableAD(this, new PlayLoadingListener() {
+        mAds.presentPlayableAD(this, new SimplePlayLoadingListener() {
             @Override
             public void playableAdsIncentive() {
                 setInfo(getString(R.string.ads_incentive));
@@ -90,6 +92,7 @@ public class MainActivity extends Activity {
             public void onAdsError(int code, String msg) {
                 setInfo(getString(R.string.ads_error, code, msg));
             }
+
         });
     }
 
