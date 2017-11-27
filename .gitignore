@@ -55,3 +55,7 @@ freeline/
 freeline_project_description.json
 /.metadata/
 /.recommenders/
+
+# Eclipse
+.classpath
+.project
