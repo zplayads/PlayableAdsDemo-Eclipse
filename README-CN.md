@@ -47,7 +47,7 @@ PlayableAds.getInstance().requestPlayableAds("androidDemoAdUnit", new PlayPreloa
 })
 ```
 
-## 3.3 展示广告
+## 3.3 展示广告/获取奖励
 调用```PlayableAds.getInstance().presentPlayableAD(adUnitId, playLoadingListener)```展示广告，listener回调方法说明：
 ```
 public interface PlayLoadingListener {
