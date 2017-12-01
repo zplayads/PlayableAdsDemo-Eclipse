@@ -70,7 +70,7 @@ PlayableAds.getInstance().presentPlayableAD(this, playLoadingListener)
 You can confirm the completed ad show with this listener callback.  
 ```
 public interface PlayLoadingListener {
-    // This is a callback of completing the whole event (showing, playing, quitting from landing page), which means the reward shall be given 
+    // This is a callback of completing the whole event (showing, playing, quitting from landing page), which means the reward shall be given, at this point, you can request the next ad
     void playableAdsIncentive();
     // Mistake occurred during the showing
     void onAdsError(int code, String msg);
