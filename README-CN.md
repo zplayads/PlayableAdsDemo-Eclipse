@@ -51,7 +51,7 @@ PlayableAds.getInstance().requestPlayableAds("androidDemoAdUnit", new PlayPreloa
 调用```PlayableAds.getInstance().presentPlayableAD(adUnitId, playLoadingListener)```展示广告，listener回调方法说明：
 ```
 public interface PlayLoadingListener {
-    // 完成整个广告事务（游戏展示，游戏试玩和落地页退出）后的回调，表示可以下发奖励
+    // 完成整个广告事务（游戏展示，游戏试玩和落地页退出）后的回调，表示可以下发奖励，此时可以发起下一次广告请求
     void playableAdsIncentive();
     // 展示过程中出现错误
     void onAdsError(int code, String msg);
@@ -62,7 +62,7 @@ public interface PlayLoadingListener {
 PlayableAds.getInstance().presentPlayableAD("androidDemoAdUnit", new PlayLoadingListener() {
     @Override
     public void playableAdsIncentive() {
-        // 广告展示完成，回到原页面，此时可以给用户奖励了。
+        // 广告展示完成，回到原页面，此时可以给用户奖励了，此时可以发起下一次广告请求
     }
 
     @Override
