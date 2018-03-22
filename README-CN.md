@@ -1,4 +1,4 @@
-# 1 概述 v1.2.7
+# 1 概述 v2.0.2
 
 ## 1.1 面向读者
 本产品面向需要在Android Studio中接入ZPLAYAds SDK的Android开发人员
@@ -54,11 +54,11 @@ PlayableAds.getInstance().requestPlayableAds("androidDemoAdUnit", new PlayPreloa
 })
 ```
 
-## 3.3 展示广告/获取奖励
+## 3.3 展示广告
 调用```PlayableAds.getInstance().presentPlayableAD(adUnitId, playLoadingListener)```展示广告，listener回调方法说明：
 ```
 public interface PlayLoadingListener {
-    // 完成整个广告事务（游戏展示，游戏试玩和落地页退出）后的回调，表示可以下发奖励，此时可以发起下一次广告请求
+    // 完成整个广告事务（游戏展示，游戏试玩和落地页退出）后的回调，表示可以下发奖励
     void playableAdsIncentive();
     // 展示过程中出现错误
     void onAdsError(int code, String msg);
@@ -69,7 +69,7 @@ public interface PlayLoadingListener {
 PlayableAds.getInstance().presentPlayableAD("androidDemoAdUnit", new PlayLoadingListener() {
     @Override
     public void playableAdsIncentive() {
-        // 广告展示完成，回到原页面，此时可以给用户奖励了，此时可以发起下一次广告请求
+        // 广告展示完成，回到原页面，此时可以给用户奖励了。
     }
 
     @Override
@@ -79,10 +79,6 @@ PlayableAds.getInstance().presentPlayableAD("androidDemoAdUnit", new PlayLoading
 });
 ```
 
-## 3.4 多物料缓存
-自v1.2.2开始，sdk支持每次请求缓存多个广告。通过```PlayableAds.getInstance().setCacheCountPerUnitId(count)```设置。
-
-
 # 4 混淆处理
 如果项目做混淆，请将以下代码放到proguard-rules.pro文件或自定义文件中
 ```
@@ -91,6 +87,7 @@ PlayableAds.getInstance().presentPlayableAD("androidDemoAdUnit", new PlayLoading
 -keep class com.playableads.PlayLoadingListener {*;}
 -keep class * implements com.playableads.PlayPreloadingListener {*;}
 -keep class * implements com.playableads.PlayLoadingListener {*;}
+-keep class com.playableads.PlayableReceiver {*;}
 -keep class com.playableads.constants.StatusCode {*;}
 -keep class com.playableads.MultiPlayLoadingListener {*;}
 -keep class com.playableads.MultiPlayPreloadingListener {*;}
@@ -108,10 +105,35 @@ PlayableAds.getInstance().presentPlayableAD("androidDemoAdUnit", new PlayLoading
     public void setMultiLoadingListener(com.playableads.MultiPlayLoadingListener);
     public void setMultiPreloadingListener(com.playableads.MultiPlayPreloadingListener);
     public void setCacheCountPerUnitId(int);
+    public void setAutoLoadAd(boolean);
 }
 ```
 
-## 补充说明
-* 每次广告请求只能展示一次，展示完成后需要重新请求广告
-* 由于广告资源较大，请尽可能早的请求广告。
-* 请保证应用有电话权限、存储权限，否则可能出现一直没有广告的状态。
+# 5 补充说明
+
+## 5.1 尽早请求广告
+由于广告资源较大（每条5到8M），请尽可能早的请求广告。
+
+## 5.2 设备权限
+请保证应用有电话权限、存储权限，否则可能出现一直没有广告的状态。
+
+## 5.3 自动请求广告
+SDK默认初次请求展示完毕后，自动加载下一条广告，可以通过```PlayableAds.getInstance().setAutoLoadAd(false)```关闭自动加载功能。
+
+## 5.4 请求多次广告
+可以通过```PlayableAds.getInstance().setCacheCountPerUnitId(cnt)```设置一个广告位可以提前缓存多个广告，该缓存一天内有效。
+
+## 5.5 状态码及含意
+
+|状态码|描述|补充|
+|-----|----|---|
+|1001|request constructed error|构建请求参数时出错，导致参数缺失|
+|1002|request parameters error.|请求参数不匹配，如没有imei号、系统版过低等|
+|1003|lack of WRITE_EXTERNAL_STORAGE|缺少存储卡权限|
+|1004|lack of READ_PHONE_STATE|缺少手机状态权限|
+|2001|payload has been loaded|广告已经加载完成，此时可以展示广告了|
+|2002|preload finished|广告预加载完成|
+|2004|ads has filled|广告已经在加载或已经加载完成|
+|2005|no ad|服务器无广告返回|
+|5001|context is null|初始化时传入的context为空|
+|5002|network error|网络错误|

@@ -112,6 +112,7 @@ If the project need to be proguarded, put the following code into the proguard.p
 -keep class com.playableads.PlayLoadingListener {*;}
 -keep class * implements com.playableads.PlayPreloadingListener {*;}
 -keep class * implements com.playableads.PlayLoadingListener {*;}
+-keep class com.playableads.PlayableReceiver {*;}
 -keep class com.playableads.constants.StatusCode {*;}
 -keep class com.playableads.MultiPlayLoadingListener {*;}
 -keep class com.playableads.MultiPlayPreloadingListener {*;}
@@ -129,6 +130,7 @@ If the project need to be proguarded, put the following code into the proguard.p
     public void setMultiLoadingListener(com.playableads.MultiPlayLoadingListener);
     public void setMultiPreloadingListener(com.playableads.MultiPlayPreloadingListener);
     public void setCacheCountPerUnitId(int);
+    public void setAutoLoadAd(boolean);
 }
 ```
 
