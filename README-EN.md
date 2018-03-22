@@ -2,7 +2,7 @@
 
 
 ## 1.1 Introduction
-This guide is designed for developers who are going to integrate the ZPLAY Ads SDK into their Android Apps via Android Studio.  Please contact support@zplayads.com, if you need any assistance in this work.
+This guide is designed for developers who are going to integrate the ZPLAY Ads SDK into their Android Apps via Android Studio.  Please contact service@zplayads.com, if you need any assistance in this work.
 
 ## 1.2 Development Environment
 - OS：WinAll, Linux, Mac
@@ -69,7 +69,7 @@ PlayableAds.getInstance().requestPlayableAds(new PlayPreloadingListener() {
     }
 })
 ```
-## 3.3 Show Ads/Obtain Rewards
+## 3.3 Show Ads
 When an ad is ready to display, you can show it using following method.
 ```
 PlayableAds.getInstance().presentPlayableAD(this, playLoadingListener)
@@ -77,7 +77,7 @@ PlayableAds.getInstance().presentPlayableAD(this, playLoadingListener)
 You can confirm the completed ad show with this listener callback.  
 ```
 public interface PlayLoadingListener {
-    // This is a callback of completing the whole event (showing, playing, quitting from landing page), which means the reward shall be given, at this point, you can request the next ad
+    // This is a callback of completing the whole event (showing, playing, quitting from landing page), which means the reward shall be given
     void playableAdsIncentive();
     // Mistake occurred during the showing
     void onAdsError(int code, String msg);
@@ -97,11 +97,6 @@ PlayableAds.getInstance().presentPlayableAD(activity, new PlayLoadingListener() 
         // Ad impression fail,locate problem according error code and error messages.
     }
 });
-```
-## 3.4 Caching Multiple Ads
-The caching of multiple ads for each request is supported. Set it through calling the following code.
-```
-PlayableAds.getInstance().setCacheCountPerUnitId(count)
 ```
 
 # 4 Proguard
@@ -142,4 +137,6 @@ Click [HERE](https://github.com/zplayads/PlayableAdsDemo-Eclipse) to download De
 To ensure the ad resource can be successfully loaded, it’s encouraged to request ads as soon as possible.
 ## 6.2 Permissions
 Make sure your app was granted Phone State permission and Storage Permission, otherwise there may be no ads in your app.
+## 6.3 Request Next Ad
+PlayableAds sdk will autoload next ad by default, when it failed to load ad they will try again 5 seconds later. You can forbiden autoload action by calling setAutoLoadAd(false).
 
