@@ -19,7 +19,10 @@ import com.playableads.demo.R;
 
 public class MainActivity extends Activity {
 	private static final String APP_ID = "androidDemoApp";
+	// 可玩广告位
     private static final String AD_UNIT_ID = "androidDemoAdUnit";
+    // 插屏广告
+    private static final String AD_UNIT_ID_INTERSTITIAL = "androidDemoAdUnitInterstitial";
     private TextView info;
     private EditText mUnitIdEdit;
     private ScrollView mScrollView;
@@ -36,6 +39,9 @@ public class MainActivity extends Activity {
 
         // 务必进行初始化，将androidDemoApp与androidDemoAdUnit替换为通过审核的appId和广告位Id
         mAds = PlayableAds.init(this, APP_ID);
+        // 默认自动请求下一个/批广告
+        mAds.setAutoLoadAd(true);
+        // 设置一个广告位可缓存多少个物料
         mAds.setCacheCountPerUnitId(1);
 
         // 模拟多个广告位
@@ -98,26 +104,16 @@ public class MainActivity extends Activity {
                 // 广告正确展示，此时广告已经产生收益，您可以给用户奖励货其他
                 setInfo(getString(R.string.ads_incentive));
                 setInfo(mUnitId + " " + getString(R.string.ads_incentive));
-                
-                // 启动下次请求
-                setInfo(mUnitId + " " + getString(R.string.start_request));
-                mAds.requestPlayableAds(mUnitId, new PlayPreloadingListener() {
-                    @Override
-                    public void onLoadFinished() {
-                        setInfo(mUnitId + " " + getString(R.string.pre_cache_finished));
-                    }
-
-                    @Override
-                    public void onLoadFailed(int errorCode, String msg) {
-                        setInfo(mUnitId + " " + msg);
-                    }
-                });
             }
 
             @Override
             public void onAdsError(int errorCode, String msg) {
                 // 广告展示失败，请根据错误码和错误信息定位问题
                 setInfo(getString(R.string.ads_error, errorCode, msg));
+            }
+            
+            @Override
+            public void onAdClosed() {
             }
         });
     }
