@@ -1,146 +1,180 @@
 package com.demo;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import com.playableads.PlayPreloadingListener;
 import com.playableads.PlayableAds;
 import com.playableads.SimplePlayLoadingListener;
 import com.playableads.demo.R;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
 public class MainActivity extends Activity {
-	private static final String APP_ID = "androidDemoApp";
-	// 可玩广告位
-    private static final String AD_UNIT_ID = "androidDemoAdUnit";
-    // 插屏广告
-    private static final String AD_UNIT_ID_INTERSTITIAL = "androidDemoAdUnitInterstitial";
-    private TextView info;
-    private EditText mUnitIdEdit;
-    private ScrollView mScrollView;
-    PlayableAds mAds;
-    private String mUnitId = AD_UNIT_ID;
+	private static final String TAG = "MainActivity";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        info = findViewById(R.id.text);
-        mUnitIdEdit = findViewById(R.id.unitId);
-        mScrollView = findViewById(R.id.scrollView);
+	private static final String APP_ID = "5C5419C7-A2DE-88BC-A311-C3E7A646F6AF";
+	private static final String AD_UNIT_ID = "3FBEFA05-3A8B-2122-24C7-A87D0BC9FEEC";
+	private static final String Ad_UNIT_ID_INTERSTITIAL = "19393189-C4EB-3886-60B9-13B39407064E";
 
-        // 务必进行初始化，将androidDemoApp与androidDemoAdUnit替换为通过审核的appId和广告位Id
-        mAds = PlayableAds.init(this, APP_ID);
-        // 默认自动请求下一个/批广告
-        mAds.setAutoLoadAd(true);
-        // 设置一个广告位可缓存多少个物料
-        mAds.setCacheCountPerUnitId(1);
+	private TextView info;
+	private ScrollView mScrollView;
 
-        // 模拟多个广告位
-        mUnitIdEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+	private PlayableAds mAds;
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		info = findViewById(R.id.text);
+		mScrollView = findViewById(R.id.scrollView);
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                String unitId = s.toString().trim();
-                if (TextUtils.isEmpty(unitId)) {
-                    mUnitId = AD_UNIT_ID;
-                } else {
-                    mUnitId = unitId;
-                }
-            }
-        });
-    }
+		mAds = PlayableAds.init(this, APP_ID);
 
-    // 请求广告
-    public void request(View view) {
-        checkWritePermission();
+		((ToggleButton) findViewById(R.id.switchAutoLoad))
+				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						mAds.setAutoLoadAd(isChecked);
+						if (isChecked) {
+							requestAds();
+						}
+					}
+				});
+		requestAds();
+	}
 
-        String unitId = mUnitIdEdit.getText().toString();
+	private void requestAds() {
+		requestRewardedVideo(null);
+		requestInterstitial(null);
+	}
 
-        if (!TextUtils.isEmpty(unitId)) {
-            mUnitId = unitId;
-        }
+	public void requestRewardedVideo(View view) {
+		mAds.requestPlayableAds(AD_UNIT_ID, new PlayPreloadingListener() {
 
-        // 尽可能早的请求广告，每次广告展示成功后必须重新执行该方法请求下一个广告
-        mAds.requestPlayableAds(mUnitId, mPreloadingListener);
-        setInfo(getString(R.string.start_request));
-    }
+			@Override
+			public void onLoadFinished() {
+				setInfo(getString(R.string.pre_cache_finished, getShortId(AD_UNIT_ID)));
+			}
 
-    private PlayPreloadingListener mPreloadingListener = new PlayPreloadingListener() {
+			@Override
+			public void onLoadFailed(int errorCode, String msg) {
+				setInfo(getString(R.string.load_failed, getShortId(AD_UNIT_ID), errorCode, msg));
+			}
+		});
+		setInfo(getString(R.string.start_request, getShortId(AD_UNIT_ID)));
+	}
 
-        @Override
-        public void onLoadFinished() {
-            // 广告加载完成，此时您可以展示广告了
-            setInfo(getString(R.string.pre_cache_finished));
-        }
+	public void presentRewardedVideo(View view) {
+		mAds.presentPlayableAD(AD_UNIT_ID, new SimplePlayLoadingListener() {
+			@Override
+			public void onVideoStart() {
+				setInfo(getString(R.string.ads_start, getShortId(AD_UNIT_ID)));
+			}
 
-        @Override
-        public void onLoadFailed(int errorCode, String msg) {
-            // 广告加载失败，请根据错误码和错误信息定位问题
-            setInfo(String.format(getString(R.string.load_failed), errorCode, msg));
-        }
-    };
+			@Override
+			public void onVideoFinished() {
+				setInfo(getString(R.string.ads_video_finished, getShortId(AD_UNIT_ID)));
+			}
 
-    public void present(View view) {
-        // 调用该方法展示广告，请确保广告加载完成，否则展示失败
-        mAds.presentPlayableAD(mUnitId, new SimplePlayLoadingListener() {
-            @Override
-            public void playableAdsIncentive() {
-                // 广告正确展示，此时广告已经产生收益，您可以给用户奖励货其他
-                setInfo(getString(R.string.ads_incentive));
-                setInfo(mUnitId + " " + getString(R.string.ads_incentive));
-            }
+			@Override
+			public void playableAdsIncentive() {
+				setInfo(getString(R.string.ads_incentive, getShortId(AD_UNIT_ID)));
+			}
 
-            @Override
-            public void onAdsError(int errorCode, String msg) {
-                // 广告展示失败，请根据错误码和错误信息定位问题
-                setInfo(getString(R.string.ads_error, errorCode, msg));
-            }
-            
-            @Override
-            public void onAdClosed() {
-            }
-        });
-    }
+			@Override
+			public void onLandingPageInstallBtnClicked() {
+				setInfo(getString(R.string.ads_install_button_clicked, getShortId(AD_UNIT_ID)));
+			}
 
-    private void setInfo(final String msg) {
-        runOnUiThread(new Runnable() {
+			@Override
+			public void onAdClosed() {
+				setInfo(getString(R.string.ads_ad_closed, getShortId(AD_UNIT_ID)));
+			}
 
-            @Override
-            public void run() {
-                if (info != null) {
-                    info.append(msg + "\n\n");
-                }
-                mScrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
-    }
+			@Override
+			public void onAdsError(int errorCode, String msg) {
+				setInfo(getString(R.string.ads_error, getShortId(AD_UNIT_ID), errorCode, msg));
+			}
+		});
+	}
 
-    private void checkWritePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                setInfo(getString(R.string.open_write_permission));
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-            }
-            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED) {
-                setInfo(getString(R.string.open_phone_permission));
-                requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, 0);
-            }
-        }
-    }
+	public void requestInterstitial(View view) {
+		mAds.requestPlayableAds(Ad_UNIT_ID_INTERSTITIAL, new PlayPreloadingListener() {
+			@Override
+			public void onLoadFinished() {
+				setInfo(String.format(getString(R.string.pre_cache_finished), getShortId(Ad_UNIT_ID_INTERSTITIAL)));
+			}
+
+			@Override
+			public void onLoadFailed(int errorCode, String msg) {
+				setInfo(getString(R.string.load_failed, getShortId(Ad_UNIT_ID_INTERSTITIAL), errorCode, msg));
+			}
+		});
+		setInfo(getString(R.string.start_request, getShortId(Ad_UNIT_ID_INTERSTITIAL)));
+	}
+
+	public void presentInterstitial(View view) {
+		mAds.presentPlayableAD(Ad_UNIT_ID_INTERSTITIAL, new SimplePlayLoadingListener() {
+
+			@Override
+			public void onVideoStart() {
+				setInfo(getString(R.string.ads_start, getShortId(Ad_UNIT_ID_INTERSTITIAL)));
+			}
+
+			@Override
+			public void onVideoFinished() {
+				setInfo(getString(R.string.ads_video_finished, getShortId(Ad_UNIT_ID_INTERSTITIAL)));
+			}
+
+			@Override
+			public void onLandingPageInstallBtnClicked() {
+				setInfo(getString(R.string.ads_install_button_clicked, getShortId(Ad_UNIT_ID_INTERSTITIAL)));
+			}
+
+			@Override
+			public void onAdClosed() {
+				setInfo(getString(R.string.ads_ad_closed, getShortId(Ad_UNIT_ID_INTERSTITIAL)));
+			}
+
+			@Override
+			public void onAdsError(int errorCode, String msg) {
+				setInfo(getString(R.string.ads_error, getShortId(Ad_UNIT_ID_INTERSTITIAL), errorCode, msg));
+			}
+
+		});
+	}
+
+	String getShortId(String id) {
+		if (TextUtils.isEmpty(id)) {
+			return "";
+		} else if (id.length() < 7) {
+			return id;
+		} else {
+			return id.substring(0, 3) + "..." + id.substring(id.length() - 3);
+		}
+	}
+
+	private void setInfo(final String msg) {
+		Log.d(TAG, msg);
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				if (info != null) {
+					info.append(msg + "\n\n");
+				}
+				mScrollView.fullScroll(View.FOCUS_DOWN);
+			}
+		});
+	}
+
+	public void clearLog(View view) {
+		info.setText("");
+	}
 }
