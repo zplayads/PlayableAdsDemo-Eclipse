@@ -30,11 +30,13 @@ Call the method below  to initialize SDK
 PlayableAds.init(context, APPID, adUnitID)
 ```
 
-Note: You can use the following test id when you are testing. Test id won't generate revenue, please use official id when you release your App.
+Note: You can use the following test ID when you are testing. Test ID won't generate revenue, please use official ID when you release your App.
 
-|OS|  App_ID  |  Ad_Unit_id|
+|Ad_Type|  App_ID  |  Ad_Unit_ID|
 |--------|----------|------------|
-|Android |5C5419C7-A2DE-88BC-A311-C3E7A646F6AF|3FBEFA05-3A8B-2122-24C7-A87D0BC9FEEC|
+|激励视频 |5C5419C7-A2DE-88BC-A311-C3E7A646F6AF|3FBEFA05-3A8B-2122-24C7-A87D0BC9FEEC|
+|插屏| 5C5419C7-A2DE-88BC-A311-C3E7A646F6AF | 19393189-C4EB-3886-60B9-13B39407064E |
+
 
 ## 3.2 Request Ad
 To pre-load an ad may take several seconds, so it's recommended to initialize the SDK and load ads as early as possible. 
