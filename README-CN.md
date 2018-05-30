@@ -1,4 +1,4 @@
-# 1 概述 v2.0.2
+# 1 概述  v2.0.4
 
 ## 1.1 面向读者
 本产品面向需要在Android Studio中接入ZPLAYAds SDK的Android开发人员
@@ -21,11 +21,12 @@ adUnitID: 广告位ID，是ZPLAYAds平台为您的应用创建的广告位置的
 ## 3.1 初始化SDK
 调用```PlayableAds.init(context, APPID)```代码初始化SDK
 
-注：您在测试中可使用如下id进行测试，测试id不会产生收益，应用上线时请使用您申请的正式id。
+注：您在测试中可使用如下ID进行测试，测试ID不会产生收益，应用上线时请使用您申请的正式ID。
 
-|操作系统|  App_ID  |  Ad_Unit_id|
+|广告形式|  App_ID  |  Ad_Unit_ID|
 |--------|----------|------------|
-|Android |5C5419C7-A2DE-88BC-A311-C3E7A646F6AF|3FBEFA05-3A8B-2122-24C7-A87D0BC9FEEC|
+|激励视频 |5C5419C7-A2DE-88BC-A311-C3E7A646F6AF|3FBEFA05-3A8B-2122-24C7-A87D0BC9FEEC|
+|插屏| 5C5419C7-A2DE-88BC-A311-C3E7A646F6AF | 19393189-C4EB-3886-60B9-13B39407064E |
 
 ## 3.2 请求广告
 调用```PlayableAds.getInstance().requestPlayableAds(adUnitId, playPreloadingListener)```加载广告，listener回调方法说明：
@@ -112,7 +113,7 @@ PlayableAds.getInstance().presentPlayableAD("androidDemoAdUnit", new PlayLoading
 # 5 补充说明
 
 ## 5.1 尽早请求广告
-由于广告资源较大（每条5到8M），请尽可能早的请求广告。
+由于广告资源请求需要时间，请尽可能早的请求广告。
 
 ## 5.2 设备权限
 请保证应用有电话权限、存储权限，否则可能出现一直没有广告的状态。
