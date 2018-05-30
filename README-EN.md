@@ -1,4 +1,4 @@
-# 1 Overview (V2.0.2)
+# 1 Overview (V2.0.4)
 
 
 ## 1.1 Introduction
@@ -136,7 +136,7 @@ Click [HERE](https://github.com/zplayads/PlayableAdsDemo-Eclipse) to download De
 
 # 6 Notes
 ## 6.1 Request Ads ASAP
-To ensure the ad resource can be successfully loaded, it’s encouraged to request ads as soon as possible.
+To ensure the ad resource can be successfully loaded, it’s encouraged to request ads as early as possible.
 ## 6.2 Permissions
 Make sure your app was granted Phone State permission and Storage Permission, otherwise there may be no ads in your app.
 ## 6.3 Request Next Ad

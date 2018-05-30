@@ -1,4 +1,4 @@
-# 1 概述 v2.0.2
+# 1 概述 v2.0.4
 
 ## 1.1 面向读者
 本产品面向需要在Android Studio中接入ZPLAYAds SDK的Android开发人员
@@ -113,7 +113,7 @@ PlayableAds.getInstance().presentPlayableAD("androidDemoAdUnit", new PlayLoading
 # 5 补充说明
 
 ## 5.1 尽早请求广告
-由于广告资源较大（每条5到8M），请尽可能早的请求广告。
+由于广告资源请求需要时间，请尽可能早的请求广告。
 
 ## 5.2 设备权限
 请保证应用有电话权限、存储权限，否则可能出现一直没有广告的状态。
