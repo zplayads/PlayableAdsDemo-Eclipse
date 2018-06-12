@@ -1,4 +1,4 @@
-# 1 概述 v2.0.4
+# 1 概述 v2.0.5
 
 ## 1.1 面向读者
 本产品面向需要在Android Studio中接入ZPLAYAds SDK的Android开发人员
@@ -121,12 +121,6 @@ PlayableAds.getInstance().presentPlayableAD("3FBEFA05-3A8B-2122-24C7-A87D0BC9FEE
         android:hardwareAccelerated="true"
         android:screenOrientation="portrait"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-    
-    <!-- 以下为可选项，推荐填写，否则可能会影响广告填充率 -->
-    <meta-data
-        android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version" />
-       
     <receiver android:name=".PlayableReceiver">
         <intent-filter>
             <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
