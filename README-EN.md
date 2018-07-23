@@ -1,4 +1,4 @@
-# 1 Overview (V2.0.7)
+# 1 Overview
 
 
 ## 1.1 Introduction
