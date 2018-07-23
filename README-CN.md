@@ -1,4 +1,4 @@
-# 1 概述 v2.0.6
+# 1 概述
 
 ## 1.1 面向读者
 本产品面向需要在Android Studio中接入ZPLAYAds SDK的Android开发人员
