@@ -1,7 +1,7 @@
 # 1 概述
 
 ## 1.1 面向读者
-本产品面向需要在Android Studio中接入ZPLAYAds SDK的Android开发人员
+本产品面向需要在Eclipse中接入ZPLAYAds SDK的Android开发人员。若您接入中遇到任何疑问，请联系service@zplayads.com。
 
 ## 1.2 开发环境
 - 操作系统：WinAll, Linux, Mac
@@ -14,8 +14,8 @@ APPID: 应用广告，是您在ZPLAYAds平台创建媒体时获取的ID；
 adUnitID: 广告位ID，是ZPLAYAds平台为您的应用创建的广告位置的ID。
 
 # 2 SDK接入
-添加playableads库到lib。
-可选添加google play库
+添加[playableads库](https://github.com/zplayads/PlayableAdsDemo-Eclipse/blob/master/PlayableAdsEclipseDemo/libs/zplayads-v2.0.7.jar)到lib。
+可选添加[Google Play库](https://github.com/zplayads/PlayableAdsDemo-Eclipse/tree/master/google-play-services_lib)到lib库。
 
 # 3 代码接入
 ## 3.1 初始化SDK

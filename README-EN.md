@@ -2,7 +2,7 @@
 
 
 ## 1.1 Introduction
-This guide is designed for developers who are going to integrate the ZPLAY Ads SDK into their Android Apps via Android Studio.  Please contact service@zplayads.com, if you need any assistance in this work.
+This guide is designed for developers who are going to integrate the ZPLAY Ads SDK into their Android Apps via Eclipse.  Please contact service@zplayads.com, if you need any assistance in this work.
 
 ## 1.2 Development Environment
 - OS：WinAll, Linux, Mac
@@ -17,7 +17,7 @@ APPID: An ID for your App, obtained when setting up the App for monetization wit
 adUnitID: An ID for a specific ad placement within your App, as generated for your Apps within your account on the ZPLAY Ads website. 
 
 # 2 SDK Integration
-Add the playableads library to lib, Optional add google play library.
+Add the [playableads library](https://github.com/zplayads/PlayableAdsDemo-Eclipse/blob/master/PlayableAdsEclipseDemo/libs/zplayads-v2.0.7.jar) to lib, Optional add [Google Play library](https://github.com/zplayads/PlayableAdsDemo-Eclipse/tree/master/google-play-services_lib) to lib.
 
 # 3 Access Code
 To pre-load an ad may take several seconds, so it’s recommended to initialize the SDK and load ads as early as possible. When you initialize the SDK, you need to provide your APPID and adUnitID (as previously registered on ZPLAYAds.com) into the relevant places. 
