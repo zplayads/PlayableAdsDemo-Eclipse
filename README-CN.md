@@ -1,7 +1,7 @@
 # 1 概述
 
 ## 1.1 面向读者
-本产品面向需要在Eclipse中接入ZPLAYAds SDK的Android开发人员
+本产品面向需要在Eclipse中接入ZPLAYAds SDK的Android开发人员。若您接入中遇到任何疑问，请联系service@zplayads.com。
 
 ## 1.2 开发环境
 - 操作系统：WinAll, Linux, Mac
