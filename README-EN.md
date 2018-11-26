@@ -17,7 +17,7 @@ APPID: An ID for your App, obtained when setting up the App for monetization wit
 adUnitID: An ID for a specific ad placement within your App, as generated for your Apps within your account on the ZPLAY Ads website. 
 
 # 2 SDK Integration
-Add the [playableads library](https://github.com/zplayads/PlayableAdsDemo-Eclipse/blob/master/PlayableAdsEclipseDemo/libs/zplayads-v2.0.7.jar) to lib, Optional add [Google Play library](https://github.com/zplayads/PlayableAdsDemo-Eclipse/tree/master/google-play-services_lib) to lib.
+You need to add [playableads library](https://github.com/zplayads/PlayableAdsDemo-Eclipse/blob/master/PlayableAdsEclipseDemo/libs/zplayads-v2.0.7.jar) and [Google Play library](https://github.com/zplayads/PlayableAdsDemo-Eclipse/tree/master/google-play-services_lib) to lib, Google Play library is optional.
 
 # 3 Access Code
 To pre-load an ad may take several seconds, so it’s recommended to initialize the SDK and load ads as early as possible. When you initialize the SDK, you need to provide your APPID and adUnitID (as previously registered on ZPLAYAds.com) into the relevant places. 
