@@ -1,4 +1,4 @@
-# 1 Overview  V2.0.4
+# 1 Overview
 
 
 ## 1.1 Introduction
@@ -34,9 +34,8 @@ Note: You can use the following test ID when you are testing. Test ID won't gene
 
 |Ad_Type|  App_ID  |  Ad_Unit_ID|
 |--------|----------|------------|
-|激励视频 |5C5419C7-A2DE-88BC-A311-C3E7A646F6AF|3FBEFA05-3A8B-2122-24C7-A87D0BC9FEEC|
-|插屏| 5C5419C7-A2DE-88BC-A311-C3E7A646F6AF | 19393189-C4EB-3886-60B9-13B39407064E |
-
+|Reward Video|5C5419C7-A2DE-88BC-A311-C3E7A646F6AF|3FBEFA05-3A8B-2122-24C7-A87D0BC9FEEC|
+|Interstitial|5C5419C7-A2DE-88BC-A311-C3E7A646F6AF|19393189-C4EB-3886-60B9-13B39407064E|
 
 ## 3.2 Request Ad
 To pre-load an ad may take several seconds, so it's recommended to initialize the SDK and load ads as early as possible. 
@@ -79,19 +78,34 @@ PlayableAds.getInstance().presentPlayableAD(this, playLoadingListener)
 You can confirm the completed ad show with this listener callback.  
 ```
 public interface PlayLoadingListener {
-    // This is a callback of completing the whole event (showing, playing, quitting from landing page), which means the reward shall be given
+    // the ad game start playing
+    void onVideoStart();
+
+    // the ad game end, game landing page will showing
+    void onVideoFinished();
+
+    // // This is a callback of completing the whole event (showing, playing, quitting from landing page), which means the reward shall be given
+    // note: Interstitial will not fire the function
     void playableAdsIncentive();
-    // Mistake occurred during the showing
+
+    // error occurs when showing ad
     void onAdsError(int code, String msg);
+
+    // user click the install button
+    void onLandingPageInstallBtnClicked();
+
+    // ad's finally event
+    void onAdClosed();
 }
 ```
 
 Code Sample:
 ```
-PlayableAds.getInstance().presentPlayableAD(activity, new PlayLoadingListener() {
+PlayableAds.getInstance().presentPlayableAD("3FBEFA05-3A8B-2122-24C7-A87D0BC9FEEC", new PlayLoadingListener() {
     @Override
     public void playableAdsIncentive() {
-        // Ad impression success, use this to judge if the reward should be given.
+        // Ad impression success, use this to judge if the reward should be given. At this point, you can request the next ad
+        // Interstitial will not fire the function
     }
 
     @Override
@@ -101,10 +115,16 @@ PlayableAds.getInstance().presentPlayableAD(activity, new PlayLoadingListener() 
 });
 ```
 
+## 3.4 other methods
+
+```void setAutoLoadAd(boolean)``` The SDK automatically loads the next advertisement after displayed an ad by default. This method can be used to disable automatic loading of the next advertisement.
+
+```boolean canPresentAd(adUnitId)``` This method can determin whether an add has been loaded.
+
 # 4 Proguard
 If the project need to be proguarded, put the following code into the proguard.pro file or a custom file.
 ```
-# playableAds
+# ZPLAYAds
 -keep class com.playableads.PlayPreloadingListener {*;}
 -keep class com.playableads.PlayLoadingListener {*;}
 -keep class * implements com.playableads.PlayPreloadingListener {*;}
@@ -116,29 +136,24 @@ If the project need to be proguarded, put the following code into the proguard.p
 -keep class * implements com.playableads.MultiPlayLoadingListener {*;}
 -keep class * implements com.playableads.MultiPlayPreloadingListener {*;}
 -keep class com.playableads.PlayableAds {
-    public void onDestroy();
     public static com.playableads.PlayableAds getInstance();
-    public void requestPlayableAds(com.playableads.PlayPreloadingListener, java.lang.String);
-    public void requestPlayableAds(java.lang.String, com.playableads.PlayPreloadingListener);
     public synchronized static com.playableads.PlayableAds init(android.content.Context, java.lang.String);
-    public void presentPlayableAD(java.lang.String, com.playableads.PlayLoadingListener);
-    public void presentPlayableAd(com.playableads.PlayLoadingListener);
-    public boolean canPresentAd(java.lang.String);
-    public void setMultiLoadingListener(com.playableads.MultiPlayLoadingListener);
-    public void setMultiPreloadingListener(com.playableads.MultiPlayPreloadingListener);
-    public void setCacheCountPerUnitId(int);
-    public void setAutoLoadAd(boolean);
+    public <methods>;
 }
 ```
 
-# 5 Code Sample
-Click [HERE](https://github.com/zplayads/PlayableAdsDemo-Eclipse) to download Demo
+## * state code and description
 
-# 6 Notes
-## 6.1 Request Ads ASAP
-To ensure the ad resource can be successfully loaded, it’s encouraged to request ads as early as possible.
-## 6.2 Permissions
-Make sure your app was granted Phone State permission and Storage Permission, otherwise there may be no ads in your app.
-## 6.3 Request Next Ad
-PlayableAds sdk will autoload next ad by default, when it failed to load ad they will try again 5 seconds later. You can forbiden autoload action by calling setAutoLoadAd(false).
+|state code|description|
+|-----|----|
+|1001|request constructed error|
+|1002|request parameters error.|
+|1003|lack of WRITE_EXTERNAL_STORAGE|
+|1004|lack of READ_PHONE_STATE|
+|2001|payload has been loaded|
+|2002|preload finished|
+|2004|ads has filled|
+|2005|no ad|
+|5001|context is null|
+|5002|network error|
 
